@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.erdon.dao.BookDao">
+
+    <select id="selectBooks" resultType="Book">
+        select id,name,price,author,sales,stock,img_path from t_book
+    </select>
+    
+    <select id="selectBook" resultType="Book">
+        select id,name,price,author,sales,stock,img_path from t_book where id = #{id}
+    </select>
+    
+    <select id="pageCount" resultType="java.lang.Integer">
+        select count(*) from t_book
+    </select>
+    
+    <select id="itemsBook" resultType="Book">
+        select id,name,price,author,sales,stock,img_path from t_book limit ${(pageNo-1) * pageSize},#{pageSize}
+    </select>
+    
+    <select id="existsBook" resultType="Book">
+        select * from t_book where name = #{bookName}
+    </select>
+
+    <select id="pageCountByPrice" resultType="int">
+        select count(*) from t_book where price between #{min} and #{max}
+    </select>
+    
+    <select id="pageByPrice" resultType="Book">
+        select id,name,price,author,sales,stock,img_path from t_book where price between #{min} and #{max} order BY price LIMIT ${(pageNo-1) * pageSize},#{pageSize}
+    </select>
+    <update id="updataBook">
+        update t_book set name = #{book.name}, price = #{book.price}, author = #{book.author}, sales = #{book.sales}, stock = #{book.stock}, img_path = #{book.img_path} where  id = #{id}
+    </update>
+    <insert id="insertBook">
+        insert into t_book(name,author,price,sales,stock,img_path) value (#{name},#{author},#{price},#{sales},#{stock},#{img_path})
+    </insert>
+    <delete id="deletBook">
+        delete from t_book where id = #{id}
+    </delete>
+</mapper>
